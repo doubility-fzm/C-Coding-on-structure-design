@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2005
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StructureDesignModule", "StructureDesignModule\StructureDesignModule.csproj", "{10D3ED4C-0828-42AE-83A1-C14FD88EE21E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{F0F1A3B0-D985-4A94-B085-C23B3BBDDAFA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{10D3ED4C-0828-42AE-83A1-C14FD88EE21E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10D3ED4C-0828-42AE-83A1-C14FD88EE21E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10D3ED4C-0828-42AE-83A1-C14FD88EE21E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10D3ED4C-0828-42AE-83A1-C14FD88EE21E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0F1A3B0-D985-4A94-B085-C23B3BBDDAFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0F1A3B0-D985-4A94-B085-C23B3BBDDAFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0F1A3B0-D985-4A94-B085-C23B3BBDDAFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0F1A3B0-D985-4A94-B085-C23B3BBDDAFA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BEBD3DB5-A3D6-4F60-9396-8DD4ACF72C91}
+	EndGlobalSection
+EndGlobal
