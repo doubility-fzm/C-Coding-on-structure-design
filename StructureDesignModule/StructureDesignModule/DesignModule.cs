@@ -105,14 +105,14 @@ namespace StructureDesignModule
             sw.WriteLine("Design Information is belowing:");
             string str = "";
             sw.WriteLine(str.PadRight(40, '-'));
-            sw.WriteLine("The Span Of Bridge is {0}m", Constants.spanOfBridge);
-            sw.WriteLine("The Width Of Lanes is {0}m", Constants.widthOfLane);
-            sw.WriteLine("The Num Of the lane are {0}", Constants.laneNums);
-            sw.WriteLine("The Width Of LeftShouder is {0}m", Constants.widthOfleftshouder);
-            sw.WriteLine("The Width Of RightShouder is {0}m", Constants.widthOfrightshouder);
+            sw.WriteLine("The Span Of Bridge is :{0}m", Constants.spanOfBridge);
+            sw.WriteLine("The Width Of Lanes is :{0}m", Constants.widthOfLane);
+            sw.WriteLine("The Num Of the lane are :{0}", Constants.laneNums);
+            sw.WriteLine("The Width Of LeftShouder is :{0}m", Constants.widthOfleftshouder);
+            sw.WriteLine("The Width Of RightShouder is :{0}m", Constants.widthOfrightshouder);
             sw.WriteLine("The Width Of widthOfmedialIsland {0}m", Constants.widthOfmedialIsland);
-            sw.WriteLine("The Vehicle Load is {0}", Constants.Vehicle_Load.lord_i);
-            sw.WriteLine("The Width Of Bridge is {0}m", Get_WidthOfBridge());
+            sw.WriteLine("The Vehicle Load is :{0}", Constants.Vehicle_Load.lord_i);
+            sw.WriteLine("The Width Of Bridge is :{0}m", Get_WidthOfBridge());
             sw.WriteLine(str.PadRight(40, '-'));
             sw.Close();
         }
@@ -131,6 +131,9 @@ namespace StructureDesignModule
         private double girder_lower_flange_thickness { get; set; }
         public double axis_moment_inertial_girder { get; set; }//转动刚度
         private double calculated_Moment { get; set; }//计算弯矩
+        //新添加的成员属性，获取组合梁桥面板轮廓
+        public double[] lateral_offset_dis { get; set; }
+        public int vertical_offset_dis { get; set; }
         public void calculate_girder_parament(ref Technical_Demand t)
         {
             //计算girder_gap，假定width_flange长度在1.0-1.5之间
@@ -260,6 +263,36 @@ namespace StructureDesignModule
             axis_moment_inertial_girder = 1 / 3.0 * (girder_web_thickness * yc * yc * yc) + 1 / 3.0 * (girder_web_thickness * (girder_web_height - yc)
                 * (girder_web_height - yc) * (girder_web_height - yc)) + girder_upper_flange_thickness * girder_upper_flange_width * yc * yc +
                 girder_lower_flange_width * girder_lower_flange_thickness * (girder_web_height - yc) * (girder_web_height - yc);
+            //计算各个结构定位线的偏移距离
+            lateral_offset_dis = new double[girder_nums];
+            //结构定位线数量为奇数的时候
+            if(girder_nums%2==1)
+            {
+                int tmp_num = -girder_nums / 2;
+                for(int i=0;i<lateral_offset_dis.Length;i++)
+                {
+                    lateral_offset_dis[i] = tmp_num * girder_gap;
+                    tmp_num++;
+                }
+            }
+            //为偶数的时候
+            else
+            {
+                double tmp_off_para = -girder_nums / 2 + 0.5;
+                for(int i=0;i<lateral_offset_dis.Length;i++)
+                {
+                    lateral_offset_dis[i] = tmp_off_para * girder_gap;
+                    tmp_off_para++;
+                }
+            }
+
+            //计算垂直偏移距离
+            //桥面板厚度t的计算采用经验公式t=k*(30b+110)单位是mm
+            //k取1.2，铺装层厚度取70mm，加腋高度取80mm，斜率为1:3
+
+            double th_plate = 1.2 * (30 * girder_gap + 110);
+            vertical_offset_dis=Convert.ToInt32(Math.Ceiling(th_plate / 10.0) * 10);
+
         }
         //还需要获得各个结构定位线的参数，以及桥面板的铺装层厚度
         public void Write_Info2TXT()
@@ -277,6 +310,11 @@ namespace StructureDesignModule
             sw.WriteLine("he girder_upper_flange_thickness is :{0}", girder_upper_flange_thickness);
             sw.WriteLine("the girder_lower_flange_width is :{0}", girder_lower_flange_width);
             sw.WriteLine("the girder_lower_flange_thickness is :{0}", girder_lower_flange_thickness);
+            sw.WriteLine("the bridge structure offset info is belowing:");
+            for(int i=0;i<lateral_offset_dis.Length;i++)
+            {
+                sw.WriteLine("girder{0}:{1} {2}", i+1, lateral_offset_dis[i], vertical_offset_dis);
+            }
             sw.WriteLine(str.PadRight(40, '-'));
             sw.Close();
         }
@@ -366,7 +404,6 @@ namespace StructureDesignModule
                 }
             }
         }
-
         public void Write_Info2TXT()
         {
             StreamWriter sw = new StreamWriter("DesignInfo.txt", true);
